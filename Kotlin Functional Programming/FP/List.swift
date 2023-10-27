@@ -22,6 +22,31 @@ indirect enum List<A> {
 }
 
 extension List {
+    func size() -> Int {
+        switch self {
+        case .nil:
+            return .zero
+        case .cons(_, let tail):
+            return 1 + tail.size()
+        }
+    }
+
+    func splitAt(_ index: Int) -> (List<A>, List<A>) {
+        switch self {
+        case .nil:
+            return (.nil, .nil)
+        case let .cons(value, tail):
+            if index == 0 {
+                return (.nil, .cons(value, tail))
+            } else {
+                let (left, right) = tail.splitAt(index - 1)
+                return (.cons(value, left), right)
+            }
+        }
+    }
+}
+
+extension List {
     func sum(_ ints: List<Int>) -> Int {
         switch ints {
         case .nil:
